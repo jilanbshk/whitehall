@@ -76,21 +76,21 @@ module Whitehall
 
       test "advanced search can select documents using a boolean filter" do
         documents = build_documents(*%w{Foo Bar})
-        documents[0]['relevant_to_local_government'] = true
+        documents[0]['is_political'] = true
         @index.add_batch(documents)
-        assert_search_returns_documents %w{Foo}, relevant_to_local_government: "true"
-        assert_search_returns_documents %w{Foo}, relevant_to_local_government: "1"
-        assert_search_returns_documents %w{Bar}, relevant_to_local_government: "false"
-        assert_search_returns_documents %w{Bar}, relevant_to_local_government: "0"
+        assert_search_returns_documents %w{Foo}, is_political: "true"
+        assert_search_returns_documents %w{Foo}, is_political: "1"
+        assert_search_returns_documents %w{Bar}, is_political: "false"
+        assert_search_returns_documents %w{Bar}, is_political: "0"
       end
 
       test "advanced search raises if boolean filter is not a boolean-ish value" do
-        assert_invalid_search(relevant_to_local_government: "hello")
-        assert_invalid_search(relevant_to_local_government: "")
-        assert_invalid_search(relevant_to_local_government: "yes")
-        assert_invalid_search(relevant_to_local_government: "no")
-        assert_invalid_search(relevant_to_local_government: "false evidence")
-        assert_invalid_search(relevant_to_local_government: "true facts")
+        assert_invalid_search(is_political: "hello")
+        assert_invalid_search(is_political: "")
+        assert_invalid_search(is_political: "yes")
+        assert_invalid_search(is_political: "no")
+        assert_invalid_search(is_political: "false evidence")
+        assert_invalid_search(is_political: "true facts")
       end
 
       test "advanced search raises if date filter is not a pure date" do
@@ -176,7 +176,6 @@ module Whitehall
             "description" => "#{title}-description",
             "indexable_content" => "#{title}-indexable_content",
             topics: ["#{title}-topic1", "#{title}-topic2"],
-            "relevant_to_local_government" => false,
             "public_timestamp" => Time.zone.parse("2011-01-01 00:00:00")
           }
         end
